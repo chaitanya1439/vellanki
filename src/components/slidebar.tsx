@@ -81,7 +81,7 @@ const Slidebar = React.memo(() => {
               { href: '/bestsellers', label: 'Best Sellers', Icon: icons.FaStar },
               { href: '/deals', label: "Today's Deals", Icon: icons.FaTags },
               { href: '/digital-content', label: 'Digital Content', Icon: icons.FaMusic },
-              { href: '/kindle', label: 'Kindle E-readers', Icon: icons.FaBook },
+              { href: '/kindle', label: 'Chat AI', Icon: icons.FaBook },
             ].map(({ href, label, Icon }) => (
               <li key={href} className="flex items-center">
                 <React.Suspense fallback={<span>Loading...</span>}>

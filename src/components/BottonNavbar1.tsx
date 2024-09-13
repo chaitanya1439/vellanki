@@ -19,7 +19,7 @@ const BottomNavbar: React.FC= () => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="/cart" passHref>
+                    <Link href="/login" passHref>
                         <div className="flex flex-col items-center text-sm hover:text-blue-500 transition duration-200 ease-in-out">
                             <MdShoppingCart className="h-6 w-6" />
                             <span>Cart</span>
@@ -27,7 +27,7 @@ const BottomNavbar: React.FC= () => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="/favorites" passHref>
+                    <Link href="/login" passHref>
                         <div className="flex flex-col items-center text-sm hover:text-blue-500 transition duration-200 ease-in-out">
                             <MdFavorite className="h-6 w-6" />
                             <span>Favorites</span>

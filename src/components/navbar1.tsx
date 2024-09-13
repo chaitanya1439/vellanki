@@ -104,7 +104,7 @@ const Navbar: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/stay">
+                        <Link href="/login">
                             Stay
                         </Link>
                     </li>
@@ -126,7 +126,7 @@ const Navbar: React.FC = () => {
                         </details>
                     </li>
                     <li>
-                        <Link href="/travel">
+                        <Link href="/login">
                             Travel
                         </Link>
                     </li>

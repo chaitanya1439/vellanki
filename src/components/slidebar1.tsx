@@ -86,7 +86,7 @@ const Slidebar: React.FC= () => {
             <li className="flex items-center mb-2">
               <FaBook className="text-gray-600 mr-2" />
               <Link href="#" className="text-gray-700">
-                Kindle E-readers
+                Chat AI
               </Link>
             </li>
           </ul>
