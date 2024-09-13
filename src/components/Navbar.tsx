@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const BACKEND_URL = "http://localhost:3001"; 
+  const BACKEND_URL = "http://3.95.136.212"; 
 
   useEffect(() => {
     const fetchUserProfile = async () => {

@@ -5,7 +5,7 @@ import Slidebar from './slidebar';
 
 const BottomNavbar: React.FC = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const BACKEND_URL = "http://localhost:3001"; 
+    const BACKEND_URL = "http://3.95.136.212"; 
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
