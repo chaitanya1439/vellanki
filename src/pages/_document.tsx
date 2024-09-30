@@ -1,5 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import Script from 'next/script';
 
 class MyDocument extends Document {
   render() {
@@ -7,9 +6,10 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {/* Add the Google Maps script here */}
-          <Script
-            src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyC-ax1I97TVpadyeUYn8CUtYQvg2mH636g`}
-            strategy="beforeInteractive"
+          <script
+            src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBaYvW9Ki74N1YMgRmlEz6Mc1UoTyCuH8o&libraries=places`}
+            async
+            defer
           />
         </Head>
         <body className="antialiased">

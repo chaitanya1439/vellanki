@@ -1,43 +1,61 @@
+// components/Map.tsx
 import React, { useEffect } from 'react';
-import useScript from '../hooks/useScript';
 
-interface Location {
-  lat: number;
-  lng: number;
+declare global {
+  interface Window {
+    google: typeof google; // Declare google on the window object
+  }
 }
 
-interface MapProps {
-  elementId: string;
-  center: Location;
-}
-
-const MapComponent: React.FC<MapProps> = ({ elementId, center }) => {
-  const isScriptLoaded = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}`);
-
+const Map: React.FC = () => {
   useEffect(() => {
-    if (isScriptLoaded && window.google) {
-      initializeMap(elementId, center);
-    }
-  }, [isScriptLoaded, elementId, center]);
+    const initMap = async () => {
+      // Load the Google Maps library
+      const { Map } = await window.google.maps.importLibrary("maps") as google.maps.MapsLibrary;
 
-  const initializeMap = (elementId: string, center: Location) => {
-    const map = new google.maps.Map(document.getElementById(elementId) as HTMLElement, {
-      center,
-      zoom: 12,
-    });
+      const myLatlng = { lat: -25.363, lng: 131.044 };
 
-    new google.maps.Marker({
-      position: center,
-      map,
-      title: 'Pickup Location',
-    });
-  };
+      const map = new Map(document.getElementById("map")!, {
+        zoom: 4,
+        center: myLatlng,
+      });
+
+      // Create the initial InfoWindow
+      let infoWindow = new google.maps.InfoWindow({
+        content: "Click the map to get Lat/Lng!",
+        position: myLatlng,
+      });
+
+      infoWindow.open(map);
+
+      // Configure the click listener
+      map.addListener("click", (mapsMouseEvent: google.maps.MapMouseEvent) => {
+        // Close the current InfoWindow
+        infoWindow.close();
+
+        // Check if latLng is not null
+        const latLng = mapsMouseEvent.latLng;
+        if (latLng) {
+          // Create a new InfoWindow
+          infoWindow = new google.maps.InfoWindow({
+            position: latLng,
+          });
+          infoWindow.setContent(
+            JSON.stringify(latLng.toJSON(), null, 2)
+          );
+          infoWindow.open(map);
+        } else {
+          console.error("latLng is null");
+        }
+      });
+    };
+
+    initMap();
+  }, []);
 
   return (
-    <div id={elementId} className="w-full h-96">
-      {/* Map container with Tailwind CSS styling */}
-    </div>
+    <div id="map" className="w-full h-96" />
   );
 };
 
-export default MapComponent;
+export default Map;

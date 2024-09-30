@@ -1,57 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+// components/Map.tsx
+import React, { useEffect } from 'react';
 
-interface MapProps {
-  address: string;
+declare global {
+  interface Window {
+    google: typeof google; // Declare google on the window object
+  }
 }
 
-// Define a default location (e.g., New Delhi, India)
-const DEFAULT_LOCATION: google.maps.LatLngLiteral = { lat: 28.6139, lng: 77.2090 };
-
-const Map: React.FC<MapProps> = ({ address }) => {
-  const [location, setLocation] = useState<google.maps.LatLngLiteral>(DEFAULT_LOCATION);
-
+const Map: React.FC = () => {
   useEffect(() => {
-    const fetchLocation = async () => {
-      try {
-        const response = await fetch(`/api/hello?address=${encodeURIComponent(address)}`);
-        const coords = await response.json();
-        if (coords && coords.lat && coords.lng) {
-          setLocation({ lat: coords.lat, lng: coords.lng }); // Update location with fetched coordinates
+    const initMap = async () => {
+      // Load the Google Maps library
+      const { Map } = await window.google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+
+      const myLatlng = { lat: -25.363, lng: 131.044 };
+
+      const map = new Map(document.getElementById("map")!, {
+        zoom: 4,
+        center: myLatlng,
+      });
+
+      // Create the initial InfoWindow
+      let infoWindow = new google.maps.InfoWindow({
+        content: "Click the map to get Lat/Lng!",
+        position: myLatlng,
+      });
+
+      infoWindow.open(map);
+
+      // Configure the click listener
+      map.addListener("click", (mapsMouseEvent: google.maps.MapMouseEvent) => {
+        // Close the current InfoWindow
+        infoWindow.close();
+
+        // Check if latLng is not null
+        const latLng = mapsMouseEvent.latLng;
+        if (latLng) {
+          // Create a new InfoWindow
+          infoWindow = new google.maps.InfoWindow({
+            position: latLng,
+          });
+          infoWindow.setContent(
+            JSON.stringify(latLng.toJSON(), null, 2)
+          );
+          infoWindow.open(map);
         } else {
-          console.error('Invalid coordinates:', coords);
+          console.error("latLng is null");
         }
-      } catch (error) {
-        console.error('Error fetching location:', error);
-      }
+      });
     };
 
-    if (address) {
-      fetchLocation();
-    }
-  }, [address]);
-
-  const mapContainerStyle = {
-    width: '100%',
-    height: '100%',
-  };
+    initMap();
+  }, []);
 
   return (
-    <div className="w-full h-80 rounded-lg shadow-lg">
-      <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_API_KEY as string}>
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={location}
-          zoom={12}
-        >
-          <Marker position={location}>
-            <InfoWindow position={location}>
-              <div>{address || 'Default Location'}</div>
-            </InfoWindow>
-          </Marker>
-        </GoogleMap>
-      </LoadScript>
-    </div>
+    <div id="map" className="w-full h-96" />
   );
 };
 

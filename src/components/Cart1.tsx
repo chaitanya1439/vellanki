@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
+import React from 'react';
 
 type CartItem = {
   id: number;
@@ -56,22 +57,13 @@ export default function CartPage() {
     fetchCart();
   }, []);
 
-  const updateCartItemQuantity = (itemId: number, quantity: number) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === itemId ? { ...item, quantity: item.quantity + quantity } : item
-      )
-    );
-  };
-
   const handleAddToCart = async (itemId: number) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/v1/cart/add`, {
         menuItemId: itemId,
         quantity: 1,
       });
-      updateCartItemQuantity(itemId, 1);
-      setCart(response.data.items || []); // Safeguard against undefined
+      setCart(response.data.items || []); // Update the cart with the response from the backend
     } catch (error) {
       console.error('Error adding item to cart:', error);
     }
@@ -83,8 +75,7 @@ export default function CartPage() {
         menuItemId: itemId,
         quantity: 1,
       });
-      updateCartItemQuantity(itemId, -1);
-      setCart(response.data.items || []); // Safeguard against undefined
+      setCart(response.data.items || []); // Update the cart with the response from the backend
     } catch (error) {
       console.error('Error removing item from cart:', error);
     }

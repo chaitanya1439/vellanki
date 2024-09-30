@@ -6,7 +6,7 @@ import Link from 'next/link';
 const Signup: React.FC = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const BACKEND_URL = "http://3.95.136.212"; 
+  const BACKEND_URL = "http://localhost:3001"; 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
