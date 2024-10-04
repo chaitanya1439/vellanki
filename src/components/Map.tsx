@@ -13,7 +13,7 @@ const Map: React.FC = () => {
       // Load the Google Maps library
       const { Map } = await window.google.maps.importLibrary("maps") as google.maps.MapsLibrary;
 
-      const myLatlng = { lat: -25.363, lng: 131.044 };
+      const myLatlng = { lat: 17.339, lng: 78.551 };
 
       const map = new Map(document.getElementById("map")!, {
         zoom: 4,
