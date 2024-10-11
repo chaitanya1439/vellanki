@@ -20,14 +20,14 @@ const foodItems: FoodItem[] = [
   {
     id: 2,
     name: 'Pizza',
-    imageSrc: '/img3.jpeg',
+    imageSrc: '/img9.jpeg',
     rating: 4.7,
     price: 12.99,
   },
   {
     id: 3,
     name: 'Pasta',
-    imageSrc: '/img3.jpeg',
+    imageSrc: '/img10.jpeg',
     rating: 4.3,
     price: 10.99,
   },
