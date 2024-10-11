@@ -1,4 +1,3 @@
-// components/Map.tsx
 import React, { useEffect } from 'react';
 
 declare global {
@@ -7,23 +6,42 @@ declare global {
   }
 }
 
-const Map: React.FC = () => {
+// Define the Location type
+interface Location {
+  lat: number;
+  lng: number;
+}
+
+interface MapProps {
+  elementId: string; // Prop for the map element ID
+  center: Location; // Center coordinates
+}
+
+const Map: React.FC<MapProps> = ({ elementId, center }) => {
   useEffect(() => {
     const initMap = async () => {
-      // Load the Google Maps library
-      const { Map } = await window.google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+      // Check if Google Maps library is already loaded
+      if (!window.google) {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
+        script.async = true;
+        script.onload = createMap; // Create the map after loading the script
+        document.head.appendChild(script);
+      } else {
+        createMap(); // Create the map if the library is already loaded
+      }
+    };
 
-      const myLatlng = { lat: 17.339, lng: 78.551 };
-
-      const map = new Map(document.getElementById("map")!, {
-        zoom: 4,
-        center: myLatlng,
+    const createMap = () => {
+      const map = new window.google.maps.Map(document.getElementById(elementId)!, {
+        zoom: 10,
+        center: center,
       });
 
-      // Create the initial InfoWindow
-      let infoWindow = new google.maps.InfoWindow({
+      // Create and manage InfoWindows
+      let infoWindow = new window.google.maps.InfoWindow({
         content: "Click the map to get Lat/Lng!",
-        position: myLatlng,
+        position: center,
       });
 
       infoWindow.open(map);
@@ -33,16 +51,14 @@ const Map: React.FC = () => {
         // Close the current InfoWindow
         infoWindow.close();
 
-        // Check if latLng is not null
+        // Get the latLng from the click event
         const latLng = mapsMouseEvent.latLng;
         if (latLng) {
           // Create a new InfoWindow
-          infoWindow = new google.maps.InfoWindow({
+          infoWindow = new window.google.maps.InfoWindow({
             position: latLng,
           });
-          infoWindow.setContent(
-            JSON.stringify(latLng.toJSON(), null, 2)
-          );
+          infoWindow.setContent(JSON.stringify(latLng.toJSON(), null, 2));
           infoWindow.open(map);
         } else {
           console.error("latLng is null");
@@ -51,11 +67,16 @@ const Map: React.FC = () => {
     };
 
     initMap();
-  }, []);
 
-  return (
-    <div id="map" className="w-full h-96" />
-  );
+    return () => {
+      const mapElement = document.getElementById(elementId);
+      if (mapElement) {
+        mapElement.innerHTML = ''; // Clean up the map element
+      }
+    };
+  }, [elementId, center]);
+
+  return <div id={elementId} className="w-full h-96" />;
 };
 
 export default Map;

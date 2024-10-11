@@ -1,11 +1,9 @@
-// pages/index.tsx
-
 import React, { useState } from 'react';
 import RoomCards from '../components/RoomCard1';
-import dynamic from 'next/dynamic';
 import Search from '@/components/Search';
 import Navbar from '@/components/Navbar';
 import BottomNavbar from '@/components/BottonNavbar';
+import DynamicMap from '../components/MapComponent'; // Renamed import
 
 // Room type definition
 type Room = {
@@ -29,8 +27,6 @@ type Booking = {
 };
 
 // Sample room data
-const Map = dynamic(() => import('../components/Map'), { ssr: false });
-
 const rooms: Room[] = [
   { id: 1, price: 100, rating: 4.5, amenities: ['Wi-Fi', 'Pool'], image: '/imgs1.jpeg' },
   { id: 2, price: 150, rating: 4.7, amenities: ['Wi-Fi', 'Gym'], image: '/imgs2.jpeg' },
@@ -60,7 +56,7 @@ const Home: React.FC = () => {
   const [address, setAddress] = useState<string>('');
 
   const handleSearch = (address: string) => {
-    setAddress(address);
+    setAddress(address); // Set the address from the search input
   }
 
   // Handle form input changes and update filters
@@ -103,7 +99,9 @@ const Home: React.FC = () => {
       <div className="bg-gray-100 w-full fixed top-0 left-0 z-50">
         <Navbar />
       </div>
-     <Map address={address} />
+      <DynamicMap address={address} />
+
+
       <Search onSearch={handleSearch} />
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Available Rooms</h1>
@@ -195,12 +193,8 @@ const Home: React.FC = () => {
           >
             Calculate Total Price
           </button>
-
-          {/* Display Total Price */}
           {totalPrice !== null && (
-            <p className="text-xl font-bold mt-4">
-              Total Price: ${totalPrice.toFixed(2)}
-            </p>
+            <p className="mt-4 text-lg font-semibold">Total Price: ${totalPrice}</p>
           )}
         </div>
       </div>

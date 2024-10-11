@@ -1,5 +1,5 @@
 import React from 'react';
-import MapComponent from '../components/MapComponent';
+import Map from '../components/Map';
 import RideOptionCard from '../components/RideOptionCard';
 import BookingForm from '../components/BookingForm';
 import { Location } from '@/pages/api/hello';
@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
       {/* Map Section */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Map and Ride Options</h2>
-        <MapComponent elementId="map" center={center} />
+        <Map elementId="map" center={center} />
       </div>
 
       {/* Ride Options Section */}
