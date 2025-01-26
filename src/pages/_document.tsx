@@ -11,6 +11,7 @@ class MyDocument extends Document {
             async
             defer
           />
+          <title>Shelteric</title>
         </Head>
         <body className="antialiased">
           <Main />
