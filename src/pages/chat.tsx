@@ -14,7 +14,7 @@ const ChatPage = () => {
     setResponse("");
 
     try {
-      const res = await fetch(`http://192.168.31.236:3001/api/chat`, {
+      const res = await fetch(`192.168.31.236:3001/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: [{ role: "user", content: prompt }] }),

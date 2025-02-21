@@ -22,7 +22,7 @@ const BottomNavbar: React.FC = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch('http://192.168.31.236:3001/api/auth/me', {
+        const res = await fetch('192.168.31.236:3001/api/auth/me', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
