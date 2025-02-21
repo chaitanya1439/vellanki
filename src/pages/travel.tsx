@@ -9,9 +9,9 @@ import BottomNavbar from '@/components/BottonNavbar';
 const center: Location = { lat: 40.748817, lng: -73.985428 }; // Example coordinates
 
 const rideOptions = [
-  { id: 1, type: 'Bike', price: 10, description: 'Economical and fast' },
-  { id: 2, type: 'Auto', price: 20, description: 'Comfortable for small groups' },
-  { id: 3, type: 'Ambulance', price: 50, description: 'Emergency transport' },
+  { id: 1, type: 'Bike', price: 147, description: 'Economical and fast' },
+  { id: 2, type: 'Auto', price: 300, description: 'Comfortable for small groups' },
+  { id: 3, type: 'Ambulance', price: 750, description: 'Emergency transport' },
 ];
 
 const pickupLocation: Location = { lat: 40.748817, lng: -73.985428 }; // Example pickup location

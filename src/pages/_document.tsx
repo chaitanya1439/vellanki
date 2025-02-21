@@ -7,11 +7,18 @@ class MyDocument extends Document {
         <Head>
           {/* Add the Google Maps script here */}
           <script
-            src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBaYvW9Ki74N1YMgRmlEz6Mc1UoTyCuH8o&libraries=places`}
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaYvW9Ki74N1YMgRmlEz6Mc1UoTyCuH8o&libraries=places"
             async
             defer
           />
-          <title>Shelteric</title>
+          {/* Remove <title> from here.
+              Instead, add a title in each page using next/head, for example:
+              import Head from 'next/head';
+              ...
+              <Head>
+                <title>Shelteric</title>
+              </Head>
+          */}
         </Head>
         <body className="antialiased">
           <Main />
@@ -23,3 +30,4 @@ class MyDocument extends Document {
 }
 
 export default MyDocument;
+

@@ -29,7 +29,7 @@ const RideOptionCard: React.FC<RideOptionProps> = ({ type, price, description })
         <h3 className="text-lg font-semibold">{type}</h3>
       </div>
       <p className="text-gray-700 mb-2">{description}</p>
-      <p className="text-green-500 text-xl font-bold">${price}</p>
+      <p className="text-green-500 text-xl font-bold">₹{price}</p>
     </div>
   );
 };

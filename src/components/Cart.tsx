@@ -15,21 +15,21 @@ const foodItems: FoodItem[] = [
     name: 'Burger',
     imageSrc: '/img3.jpeg',
     rating: 4.5,
-    price: 8.99,
+    price: 95.99,
   },
   {
     id: 2,
     name: 'Pizza',
     imageSrc: '/img9.jpeg',
     rating: 4.7,
-    price: 12.99,
+    price: 125.99,
   },
   {
     id: 3,
     name: 'Pasta',
     imageSrc: '/img10.jpeg',
     rating: 4.3,
-    price: 10.99,
+    price: 101.99,
   },
 ];
 

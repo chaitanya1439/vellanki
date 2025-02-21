@@ -1,61 +1,71 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import React, { useState, startTransition } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const Signup: React.FC = () => {
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const BACKEND_URL = "http://localhost:3001"; 
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const data = {
-      name: (event.currentTarget.elements.namedItem('name') as HTMLInputElement).value,
-      email: (event.currentTarget.elements.namedItem('email') as HTMLInputElement).value,
-      password: (event.currentTarget.elements.namedItem('password') as HTMLInputElement).value,
-    };
-
+  // Handler for traditional signup
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const response = await axios.post(`${BACKEND_URL}/v1/user/register`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const res = await fetch('http://192.168.31.236:3001/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, username, password }),
       });
-
-      if (response.status === 201) {
-        router.push('/home');
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        startTransition(() => {
+          router.push('/home');
+        });
+      } else {
+        alert(data.message || 'Signup failed');
       }
-    } catch (error: unknown) {
-      setErrorMessage('An error occurred. Please try again.');
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred');
     }
   };
 
+  // Handler for Google sign-in
   const handleGoogleSignIn = () => {
-    window.location.href = `${BACKEND_URL}/v1/user/google/secrets`;
+    // Simply redirect to the Google authentication endpoint.
+    window.location.href = 'http://localhost:3001/api/auth/google';
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-950">Create your account</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-950">
+          Create your account
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700">Name</label>
             <input
               type="text"
               name="name"
+              placeholder="Your name"
               className="w-full px-3 py-2 border rounded-lg text-gray-950"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Email Address</label>
+            <label className="block text-gray-700">Username</label>
             <input
-              type="email"
-              name="email"
+              type="text"
+              name="username"
+              placeholder="Username"
               className="w-full px-3 py-2 border rounded-lg text-gray-950"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
@@ -64,7 +74,10 @@ const Signup: React.FC = () => {
             <input
               type="password"
               name="password"
+              placeholder="Password"
               className="w-full px-3 py-2 border rounded-lg text-gray-950"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
@@ -75,7 +88,6 @@ const Signup: React.FC = () => {
             Continue
           </button>
         </form>
-        {errorMessage && <p className="text-red-500 mt-4 text-center">{errorMessage}</p>}
         <div className="text-center mt-4 text-gray-950">
           <div className="flex items-center justify-center mb-6">
             <span className="border-t border-gray-300 flex-grow"></span>
@@ -83,15 +95,19 @@ const Signup: React.FC = () => {
             <span className="border-t border-gray-300 flex-grow"></span>
           </div>
           <button
-            className="w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 mt-2 flex items-center justify-center"
             onClick={handleGoogleSignIn}
+            className="w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 mt-2 flex items-center justify-center"
           >
             Sign up with Google
           </button>
-          {/* Additional buttons for other providers can be added similarly */}
         </div>
         <div className="text-center mt-4 text-gray-950">
-          <p>Already have an account? <Link href="/login" className="text-blue-500">Log in</Link></p>
+          <p>
+            Already have an account?{' '}
+            <Link href="/login">
+              <span className="text-blue-500">Log in</span>
+            </Link>
+          </p>
         </div>
       </div>
     </div>

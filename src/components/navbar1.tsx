@@ -109,21 +109,9 @@ const Navbar: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                        <details>
-                            <summary>Food</summary>
-                            <ul className="p-2 bg-gray-100 rounded-lg shadow-lg">
-                                <li>
-                                    <Link href="/food/submenu1">
-                                        Submenu 1
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="/food/submenu2">
-                                        Submenu 2
-                                    </Link>
-                                </li>
-                            </ul>
-                        </details>
+                    <Link href="/login">
+                            Food
+                        </Link>
                     </li>
                     <li>
                         <Link href="/login">

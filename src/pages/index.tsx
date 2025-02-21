@@ -1,9 +1,19 @@
+import { useRouter } from "next/router";
 import Banner from "../components/Banner";
 import BottomNavbar from "../components/BottonNavbar1";
 import CartPage from "../components/Cart";
 import Navbar from "../components/navbar1";
+import { useEffect } from "react";
 
 export function Index() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/home');
+    }
+  }, [router]);
   
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -14,6 +24,9 @@ export function Index() {
         <Banner />
       </div>
       <CartPage />
+      <p>
+        
+      </p>
       <BottomNavbar />
     </div>
   );

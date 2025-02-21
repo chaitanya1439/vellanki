@@ -18,7 +18,7 @@ const cartItem: CartItem[] = [
     name: 'Burger',
     imageSrc: '/img3.jpeg',
     rating: 4.5,
-    price: 8.99,
+    price: 95.99,
     quantity: 0, // Default value
   },
   {
@@ -26,7 +26,7 @@ const cartItem: CartItem[] = [
     name: 'Pizza',
     imageSrc: '/img9.jpeg',
     rating: 4.7,
-    price: 12.99,
+    price: 125.99,
     quantity: 0, // Default value
   },
   {
@@ -34,7 +34,7 @@ const cartItem: CartItem[] = [
     name: 'Pasta',
     imageSrc: '/img10.jpeg',
     rating: 4.3,
-    price: 10.99,
+    price: 101.99,
     quantity: 0, // Default value
   },
 ];
@@ -121,7 +121,7 @@ export default function CartPage() {
               />
               <h2 className="text-xl font-semibold mt-4">{item.name}</h2>
               <p className="mt-2 text-gray-600">Rating: {item.rating} ⭐️</p>
-              <p className="mt-2 text-gray-800 font-bold">${item.price.toFixed(2)}</p>
+              <p className="mt-2 text-gray-800 font-bold">₹{item.price.toFixed(2)}</p>
               <div className="flex items-center justify-between mt-4">
                 <button
                   className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
@@ -147,7 +147,7 @@ export default function CartPage() {
       {cart.length > 0 && (
         <>
           <div className="mt-6 text-xl font-semibold">
-            Total: ${totalAmount.toFixed(2)}
+            Total: ₹{totalAmount.toFixed(2)}
           </div>
           <button
             className="mt-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
