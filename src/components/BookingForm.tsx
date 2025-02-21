@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Location } from '@/pages/api/hello';
 import { submitBooking } from './Booking';
 
 interface BookingFormProps {

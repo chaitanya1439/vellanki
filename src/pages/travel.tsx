@@ -1,10 +1,13 @@
 import React from 'react';
 import Map from '../components/Map';
 import RideOptionCard from '../components/RideOptionCard';
-import BookingForm from '../components/BookingForm';
-import { Location } from '@/pages/api/hello';
 import Navbar from '@/components/Navbar';
 import BottomNavbar from '@/components/BottonNavbar';
+
+type Location = {
+  lat: number;
+  lng: number;
+};
 
 const center: Location = { lat: 40.748817, lng: -73.985428 }; // Example coordinates
 
@@ -14,9 +17,6 @@ const rideOptions = [
   { id: 3, type: 'Ambulance', price: 750, description: 'Emergency transport' },
 ];
 
-const pickupLocation: Location = { lat: 40.748817, lng: -73.985428 }; // Example pickup location
-const dropoffLocation: Location = { lat: 40.751824, lng: -73.993964 }; // Example dropoff location
-const rideOptionId = 1; // Example ride option ID
 
 const HomePage: React.FC = () => {
   return (
@@ -45,13 +45,6 @@ const HomePage: React.FC = () => {
           ))}
         </div>
       </div>
-
-      {/* Booking Form Section */}
-      <BookingForm
-        pickupLocation={pickupLocation}
-        dropoffLocation={dropoffLocation}
-        rideOptionId={rideOptionId}
-      />
       <BottomNavbar />
     </div>
   );

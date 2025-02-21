@@ -14,6 +14,7 @@ const Home: React.FC = () => {
   // Effect to handle token from query parameters and cleanup URL
   useEffect(() => {
     if (!router.isReady) return;
+    
     const queryToken = router.query.token;
     if (queryToken && typeof queryToken === 'string') {
       localStorage.setItem('token', queryToken);
@@ -23,7 +24,7 @@ const Home: React.FC = () => {
     } else {
       setLoading(false);
     }
-  }, [router.isReady, router.query, router.pathname]);
+  }, [router.isReady, router.query.token, router.pathname, router]); // ✅ Fixed dependencies
 
   // Effect to check for token and fetch user info
   useEffect(() => {
@@ -83,12 +84,15 @@ const Home: React.FC = () => {
       </div>
       
       <PromotionSection />
+
+      {/* Display user welcome message */}
+      {user && <p className="text-center text-lg font-semibold">Welcome, {user.username}!</p>}
       
       <CartPage />
-      <p/>
       <BottomNavbar />
     </div>
   );
 };
 
 export default Home;
+

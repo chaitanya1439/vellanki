@@ -1,7 +1,8 @@
-import { Location } from '@/pages/api/hello';
+
 
 // Interface for booking details
-interface BookingDetails {
+// 
+ interface BookingDetails {
   pickupLocation: Location;
   dropoffLocation: Location;
   rideOptionId: number;

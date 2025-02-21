@@ -98,9 +98,11 @@ const Navbar: React.FC = () => {
       {/* Top Navbar */}
       <div className="bg-gray-100 flex items-center justify-between px-4 py-2 shadow-md">
         <div className={`flex items-center ${isSearchOpen ? 'hidden' : 'flex'} md:flex`}>
-        <div className="hidden md:block">
-                        <Slidebar />
-                    </div>
+          <div className="hidden md:block">
+            <Suspense fallback={<div>Loading...</div>}>
+              <Slidebar />
+            </Suspense>
+          </div>
           <div className="text-black font-bold text-2xl ml-2">SHELTERIC</div>
         </div>
 
@@ -200,9 +202,9 @@ const Navbar: React.FC = () => {
             </Link>
           </li>
           <li>
-          <Link href="/food">
-                            Food
-                        </Link>
+            <Link href="/food" className="block">
+              Food
+            </Link>
           </li>
           <li>
             <Link href="/travel" className="block">
