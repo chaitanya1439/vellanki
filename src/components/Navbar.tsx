@@ -1,17 +1,25 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { debounce } from 'lodash';
 import {
   MdShoppingCart,
   MdLocationOn,
   MdSearch,
-  MdClose,
   MdNotifications,
   MdLogout,
+  MdMic,
+  MdQrCodeScanner,
 } from 'react-icons/md';
 
 const Slidebar = React.lazy(() => import('./slidebar'));
+
+const iconUrls = {
+  stay: '/stay.png', // Update these paths as needed
+  food: '/food.png',
+  travel: '/travel.png',
+};
 
 interface User {
   id: string;
@@ -20,9 +28,9 @@ interface User {
 }
 
 const Navbar: React.FC = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isTyping, setIsTyping] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -63,32 +71,6 @@ const Navbar: React.FC = () => {
     router.push('/');
   };
 
-  const toggleSearch = () => {
-    setIsSearchOpen((prev) => !prev);
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isDropdownOpen]);
-
   const handleSearchChange = debounce((value: string) => {
     console.log('Searching for:', value);
   }, 300);
@@ -97,61 +79,51 @@ const Navbar: React.FC = () => {
     <div>
       {/* Top Navbar */}
       <div className="bg-gray-100 flex items-center justify-between px-4 py-2 shadow-md">
-        <div className={`flex items-center ${isSearchOpen ? 'hidden' : 'flex'} md:flex`}>
+        <div className="flex items-center md:flex">
           <div className="hidden md:block">
             <Suspense fallback={<div>Loading...</div>}>
               <Slidebar />
             </Suspense>
           </div>
-          <div className="text-black font-bold text-2xl ml-2">SHELTERIC</div>
+          <div className="text-black font-bold text-xl ml-2"><Link href="/home">SHELTERIC</Link></div>
         </div>
 
-        <div className="flex items-center flex-1 justify-center relative">
-          <input
-            type="text"
-            className={`w-full max-w-md px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-950 ${
-              isSearchOpen ? 'block' : 'hidden md:block'
-            }`}
-            placeholder="Search for products, brands, and more..."
-            onChange={(e) => handleSearchChange(e.target.value)}
-          />
-          <MdSearch
-            className={`absolute top-2 right-3 h-6 w-6 text-gray-950 hover:text-blue-600 transition duration-200 ease-in-out cursor-pointer ${
-              isSearchOpen ? 'hidden' : 'block md:hidden'
-            }`}
-            onClick={toggleSearch}
-          />
-          <MdClose
-            className={`absolute top-2 right-3 h-6 w-6 text-gray-950 hover:text-blue-600 transition duration-200 ease-in-out cursor-pointer ${
-              isSearchOpen ? 'block' : 'hidden md:hidden'
-            }`}
-            onClick={toggleSearch}
-          />
+        {/* New Search Bar */}
+        <div className="flex items-center space-x-2 justify-center relative w-full max-w-md">
+          <div className="w-37 sm:w-40 md:w-72 lg:w-80">
+            <div className="relative">
+              <input
+                className="w-full p-2 pl-10 rounded-full border border-gray-300 focus:ring-2 focus:ring-blue-400"
+                placeholder="Search"
+                type="text"
+                onChange={(e) => handleSearchChange(e.target.value)}
+                onFocus={() => setIsTyping(true)}
+                onBlur={(e) => e.target.value === '' && setIsTyping(false)}
+              />
+              <MdSearch className="absolute left-3 top-3 text-gray-500" />
+              {!isTyping && (
+                <>
+                  <MdMic className="absolute right-10 top-3 text-gray-500 transition-opacity duration-200" />
+                  <MdQrCodeScanner className="absolute right-3 top-3 text-gray-500 transition-opacity duration-200" />
+                </>
+              )}
+            </div>
+          </div>
         </div>
 
-        <nav className={`flex items-center space-x-8 ${isSearchOpen ? 'hidden' : 'hidden md:flex'}`}>
-          <button
-            aria-label="Location"
-            className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out"
-          >
+        <nav className="flex items-center space-x-8 hidden md:flex">
+          <button className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out">
             <MdLocationOn className="h-6 w-6 text-gray-950" />
           </button>
-          <button
-            aria-label="Shopping Cart"
-            className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out relative"
-          >
+          <button className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out relative">
             <MdShoppingCart className="h-6 w-6 text-gray-950" />
           </button>
-          <button
-            aria-label="Notifications"
-            className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out relative"
-          >
+          <button className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out relative">
             <MdNotifications className="h-6 w-6 text-gray-950" />
           </button>
           <div className="relative">
             <button
-              aria-label="User Profile"
-              onClick={toggleDropdown}
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
               className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out flex items-center"
             >
               {user ? (
@@ -169,10 +141,7 @@ const Navbar: React.FC = () => {
                 ref={dropdownRef}
                 className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10"
               >
-                <Link
-                  href="/settings"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                >
+                <Link href="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                   Profile
                 </Link>
                 <button
@@ -188,30 +157,38 @@ const Navbar: React.FC = () => {
         </nav>
       </div>
 
-      {/* Bottom Categories */}
-      <div className="bg-base-300 px-4 py-2 shadow-sm">
-        <ul className="flex space-x-8 text-lg text-black">
-          <li>
-            <Link href="/home" className="block">
-              All
-            </Link>
-          </li>
-          <li>
-            <Link href="/stay" className="block">
-              Stay
-            </Link>
-          </li>
-          <li>
-            <Link href="/food" className="block">
-              Food
-            </Link>
-          </li>
-          <li>
-            <Link href="/travel" className="block">
-              Travel
-            </Link>
-          </li>
-        </ul>
+      {/* Bottom Categories with Images */}
+      <div className="flex justify-start gap-6 lg:gap-4 mt-2 ml-4">
+        <Link href="/stay" className="text-center flex flex-col items-center">
+          <Image
+            alt="Stay Icon"
+            className="mx-auto mb-3 shadow-lg"
+            height={50}
+            src={iconUrls.stay}
+            width={50}
+          />
+          <p className="text-xs font-bold">Stay</p>
+        </Link>
+        <Link href="/food" className="text-center flex flex-col items-center">
+          <Image
+            alt="Food Icon"
+            className="mx-auto mb-3 shadow-lg"
+            height={50}
+            src={iconUrls.food}
+            width={50}
+          />
+          <p className="text-xs font-bold">Food</p>
+        </Link>
+        <Link href="/travel" className="text-center flex flex-col items-center">
+          <Image
+            alt="Travel Icon"
+            className="mx-auto mb-3 shadow-lg"
+            height={50}
+            src={iconUrls.travel}
+            width={50}
+          />
+          <p className="text-xs font-bold">Travel</p>
+        </Link>
       </div>
     </div>
   );
