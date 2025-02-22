@@ -9,7 +9,7 @@ const Login: React.FC = () => {
 
   // Use an environment variable for the backend API base URL.
   // Note: Only variables starting with NEXT_PUBLIC_ are exposed to the browser.
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "192.168.31.236:3001";
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://call.shelteric.com:3001";
 
   // Handler for traditional username/password login.
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
