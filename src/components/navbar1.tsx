@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
         food: "/food.png",
         travel: "/travel.png"
     };
-
+    const [isTyping, setIsTyping] = useState(false);
     return (
         <div>
             <div className="bg-gray-100 flex items-center justify-between px-4 py-2 shadow-md">
@@ -34,23 +34,33 @@ const Navbar: React.FC = () => {
                     <div className="hidden md:block">
                         <Slidebar />
                     </div>
-                    <div className="text-black font-bold text-2xl ml-2">
-                        <Link href="/">SHELTERIC</Link>
-                    </div>
+                    <div className="text-black font-bold text-xl ml-2 md:ml-4 flex-grow">
+        <Link href="/">SHELTERIC</Link>
+    </div>
+
+
                 </div>
                 <div className="flex items-center space-x-2 justify-center relative">
-                    <div className="w-54 md:w-72 lg:w-80">
-                        <div className="relative">
-                            <input
-                                className="w-full p-2 pl-10 rounded-full border border-gray-300"
-                                placeholder="Search"
-                                type="text"
-                            />
-                            <MdSearch className="absolute left-3 top-3 text-gray-500" />
-                            <MdMic className="absolute right-10 top-3 text-gray-500" />
-                            <MdQrCodeScanner className="absolute right-3 top-3 text-gray-500" />
-                        </div>
-                    </div>
+
+                <div className="w-37 sm:w-40 md:w-72 lg:w-80">
+            <div className="relative">
+                <input
+                    className="w-full p-2 pl-10 rounded-full border border-gray-300"
+                    placeholder="Search"
+                    type="text"
+                    onFocus={() => setIsTyping(true)}
+                    onBlur={(e) => e.target.value === "" && setIsTyping(false)}
+                />
+                <MdSearch className="absolute left-3 top-3 text-gray-500" />
+                {!isTyping && (
+                    <>
+                        <MdMic className="absolute right-10 top-3 text-gray-500 transition-opacity duration-200" />
+                        <MdQrCodeScanner className="absolute right-3 top-3 text-gray-500 transition-opacity duration-200" />
+                    </>
+                )}
+            </div>
+        </div>
+
                 </div>
                 <nav className={`flex items-center space-x-8 ${isSearchOpen ? 'hidden' : 'hidden md:flex'}`}>
                     <Link href="/location" aria-label="Location" className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out">

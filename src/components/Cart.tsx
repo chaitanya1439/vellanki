@@ -45,7 +45,6 @@ const CartSection = ({ title, items }: { title: string; items: Item[] }) => (
 export default function CartPage() {
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">Your Cart</h1>
       <div className="space-y-10">
         <CartSection title="Food" items={foodItems} />
         <CartSection title="Stay" items={stayItems} />
