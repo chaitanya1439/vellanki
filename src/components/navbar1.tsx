@@ -2,17 +2,21 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link'; 
 import Slidebar from './slidebar1';
-import { MdShoppingCart, MdPerson, MdLocationOn, MdSearch, MdClose, MdNotifications } from 'react-icons/md';
-
-
+import { 
+  MdShoppingCart, 
+  MdPerson, 
+  MdLocationOn, 
+  MdNotifications, 
+  MdSearch, 
+  MdMic, 
+  MdQrCodeScanner 
+} from 'react-icons/md';
 
 const Navbar: React.FC = () => {
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [isSearchOpen] = useState(false);
     const router = useRouter();
 
-    const toggleSearch = () => {
-        setIsSearchOpen(!isSearchOpen);
-    };
+   
 
     const navigateToLogin = () => {
         router.push('/login');
@@ -32,34 +36,20 @@ const Navbar: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Search Bar and Icon Container */}
-                <div className="flex items-center flex-1 justify-center relative">
-                    {/* Search Bar */}
-                    <input 
-                        type="text" 
-                        className={`w-full max-w-md px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-950 ${isSearchOpen ? 'block' : 'hidden md:block'}`}
-                        placeholder="Search for products, brands, and more..." 
-                    />
-                    
-                    {/* Search Icon (only visible on mobile when search bar is hidden) */}
-                    {!isSearchOpen && (
-                        <div 
-                            className="absolute top-2 right-3 h-6 w-6 text-gray-950 hover:text-blue-600 transition duration-200 ease-in-out cursor-pointer md:hidden space-x-8"
-                            onClick={toggleSearch}
-                        >
-                            <MdSearch className="h-6 w-6" />
+                {/* Responsive Search Section */}
+                <div className="flex items-center space-x-2 justify-center relative">
+                    <div className="w-64 md:w-72 lg:w-80">
+                        <div className="relative">
+                            <input
+                                className="w-full p-2 pl-10 rounded-full border border-gray-300"
+                                placeholder="Search "
+                                type="text"
+                            />
+                            <MdSearch className="absolute left-3 top-3 text-gray-500" />
+                            <MdMic className="absolute right-10 top-3 text-gray-500" />
+                            <MdQrCodeScanner className="absolute right-3 top-3 text-gray-500" />
                         </div>
-                    )}
-
-                    {/* Close Icon (only visible on mobile when search bar is open) */} 
-                    {isSearchOpen && (
-                        <div 
-                            className="absolute top-2 right-3 h-6 w-6 text-gray-950 hover:text-blue-600 transition duration-200 ease-in-out cursor-pointer md:hidden"
-                            onClick={toggleSearch}
-                        >
-                            <MdClose className="h-6 w-6" />
-                        </div>
-                    )}
+                    </div>
                 </div>
 
                 {/* Navigation Buttons */}
@@ -109,7 +99,7 @@ const Navbar: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                    <Link href="/login">
+                        <Link href="/login">
                             Food
                         </Link>
                     </li>
