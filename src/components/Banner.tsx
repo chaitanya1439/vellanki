@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-
-
 
 const Banner: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -12,40 +10,40 @@ const Banner: React.FC = () => {
     "/img7.jpeg",
   ];
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  }, [slides.length]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  }, [slides.length]);
-
-  useEffect(() => {
-    const slideInterval = setInterval(nextSlide, 5000); 
-    return () => clearInterval(slideInterval); 
-  }, [nextSlide]);
-
   return (
-    <div className="max-w-screen-2xl pt-48 mx-auto relative overflow-hidden">
-      <div className="flex transition-transform ease-out duration-1000" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-        {slides.map((slide, index) => (
-          <div key={index} className="min-w-full h-96 relative">
+    <div className="max-w-screen-2xl pt-48 mx-auto relative">
+      {/* Promotional Section */}
+      <div className="bg-purple-700 text-white p-4 text-center rounded-lg shadow-xl">
+        <p className="text-lg font-bold">Great Summer Festival</p>
+        
+        {/* Slide Images */}
+        <div className="flex justify-center mt-4 space-x-4">
+          {slides.map((slide, index) => (
             <Image
+              key={index}
               src={slide}
               alt={`Slide ${index + 1}`}
-              layout="fill"
-              objectFit="cover"
-               fetchPriority="high"
+              width={100}
+              height={100}
+              className={`shadow-lg rounded-lg transition-all duration-300 ${currentSlide === index ? 'opacity-100 scale-110' : 'opacity-50'}`}
             />
-          </div>
-        ))}
-      </div>
-      <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-        <button onClick={prevSlide} className="btn btn-circle">❮</button>
-        <button onClick={nextSlide} className="btn btn-circle">❯</button>
+          ))}
+        </div>
+        
+        {/* Dots for Navigation */}
+        <div className="flex justify-center mt-4 space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${currentSlide === index ? 'bg-white scale-125' : 'bg-gray-400'}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
 export default Banner;
+
