@@ -1,68 +1,128 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { Sun, Moon, User, Lock, Bell } from 'lucide-react';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-export default function Settings() {
-  const router = useRouter();
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const storedDarkMode = localStorage.getItem('darkMode');
-    if (storedDarkMode === 'true') {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode.toString());
-
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
-
-  const settingsOptions = [
-    { name: 'Profile', icon: <User size={20} />, action: () => router.push('/profile') },
-    { name: 'Security', icon: <Lock size={20} />, action: () => router.push('/security') },
-    { name: 'Notifications', icon: <Bell size={20} />, action: () => router.push('/notifications') },
-    { name: 'Dark Mode', icon: darkMode ? <Moon size={20} /> : <Sun size={20} />, action: toggleDarkMode },
-  ];
-
+const Settings = () => {
+  const [user, setUser] = useState<{ name: string, phoneNumber: string} | null>(null);
+    const router = useRouter();
+  
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/');
+        return;
+      }
+  
+      const fetchUser = async () => {
+        try {
+          const res = await fetch('http://localhost:3001/api/auth/me', {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setUser(data.user);
+          } else {
+            localStorage.removeItem('token');
+            router.push('/');
+          }
+        } catch (error) {
+          console.error(error);
+          localStorage.removeItem('token');
+          router.push('/');
+        }
+      };
+  
+      fetchUser();
+    }, [router]);
+  
+    const handleLogout = () => {
+      localStorage.removeItem('token');
+      router.push('/');
+    };
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
-      <div className="p-6">
-        <h1 className="text-3xl font-bold mb-6">Settings</h1>
-        <div className="w-full max-w-md bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col gap-4">
-          {settingsOptions.map((option, index) => (
-            <div
-              key={index}
-              onClick={option.action}
-              className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
-            >
-              <div className="flex items-center gap-3">
-                {option.icon}
-                <span className="text-lg">{option.name}</span>
-              </div>
-              {option.name === 'Dark Mode' && (
-                <button
-                  className={`w-10 h-5 flex items-center rounded-full p-1 ${darkMode ? 'bg-blue-600' : 'bg-gray-400'}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleDarkMode();
-                  }}
-                >
-                  <div className={`w-4 h-4 bg-white rounded-full transform ${darkMode ? 'translate-x-5' : ''} transition`} />
-                </button>
-              )}
-            </div>
-          ))}
+    <div className="min-h-screen bg-gray-100 p-4">
+      {/* Header */}
+      <div className="flex items-center space-x-4 pb-4 border-b">
+        <button className="text-xl"><Link href="/home">←</Link></button>
+        <h1 className="text-xl font-semibold">Profile</h1>
+      </div>
+
+      {/* Profile Section */}
+      <div className="bg-white p-4 mt-4 rounded-lg shadow">
+        <div className="flex items-center space-x-4">
+          <div className="w-14 h-14 bg-purple-300 rounded-full flex items-center justify-center">
+            <span className="text-white text-2xl">{user?.name ? user.name.charAt(0).toUpperCase() : '?' }</span>
+          </div>
+          <div>
+            <span className="text-lg font-semibold">{user?.name || 'User'}</span>
+            <p className="text-gray-500">{user?.phoneNumber || 'User'}</p>
+          </div>
         </div>
       </div>
+
+      {/* Zepto Cash Section */}
+      <div className="bg-purple-100 p-4 mt-4 rounded-lg shadow">
+        <h3 className="font-semibold">Cash & Gift Card</h3>
+        <div className="flex justify-between items-center mt-2">
+          <p className="text-gray-600">Available Balance</p>
+          <p className="font-semibold">₹0</p>
+        </div>
+        <button className="mt-2 w-full bg-purple-600 text-white py-2 rounded-lg">
+          Add Balance
+        </button>
+      </div>
+
+      {/* Menu Options */}
+      <div className="bg-white p-4 mt-4 rounded-lg shadow">
+        <ul className="space-y-4">
+          {[
+            { name: "Your Orders", icon: "👜" },
+            { name: "E-Gift Cards", icon: "🎁" },
+            { name: "Help & Support", icon: "💬" },
+            { name: "Refunds", icon: "💰" },
+            { name: "Saved Addresses", icon: "📍" },
+            { name: "Profile", icon: "👤" },
+          ].map((item) => (
+            <li key={item.name} className="flex items-center justify-between">
+              <span className="flex items-center space-x-3">
+                <span>{item.icon}</span>
+                <span>{item.name}</span>
+              </span>
+              <span>→</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Other Information */}
+      <div className="bg-white p-4 mt-4 rounded-lg shadow">
+        <h3 className="text-lg font-semibold mb-2">Other Information</h3>
+        <ul className="space-y-4">
+          {[
+            { name: "Suggest Products", icon: "⭐" },
+            { name: "Notifications", icon: "🔔" },
+            { name: "General Info", icon: "ℹ️" },
+          ].map((item) => (
+            <li key={item.name} className="flex items-center justify-between">
+              <span className="flex items-center space-x-3">
+                <span>{item.icon}</span>
+                <span>{item.name}</span>
+              </span>
+              <span>→</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Logout Button */}
+      <button className="mt-6 w-full bg-red-500 text-white py-2 rounded-lg"  onClick={handleLogout}>
+        Log Out
+      </button>
     </div>
   );
-}
+};
+
+export default Settings;

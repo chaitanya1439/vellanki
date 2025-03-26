@@ -7,11 +7,9 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  // Use an environment variable for the backend API base URL.
-  // Note: Only variables starting with NEXT_PUBLIC_ are exposed to the browser.
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://call.shelteric.com:3001";
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
 
-  // Handler for traditional username/password login.
+  // Handler for traditional login
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -23,7 +21,6 @@ const Login: React.FC = () => {
 
       const data = await res.json();
       if (res.ok) {
-        // Store the JWT token and redirect the user.
         localStorage.setItem("token", data.token);
         router.push("/home");
       } else {
@@ -35,15 +32,12 @@ const Login: React.FC = () => {
     }
   };
 
-  // Handler for collaboration login (redirect worker).
+  // Redirect for collaboration login
   const handleRedirect = () => {
-    
-        // Using window.location.href to force a full redirect to a different port.
-        window.location.href = "http://localhost:3002/login";
-     
+    window.location.href = "http://localhost:3002/login";
   };
 
-  // Callback function for Google Sign-In.
+  // Google Sign-In
   const handleGoogleLogin = () => {
     window.location.href = `${API_URL}/api/auth/google`;
   };
@@ -108,6 +102,13 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+          </div>
+
+          {/* Forgot Password Link */}
+          <div className="text-right mb-4">
+            <Link href="/forgot" className="text-blue-500 hover:underline">
+              Forgot Password?
+            </Link>
           </div>
 
           <button

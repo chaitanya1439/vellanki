@@ -5,6 +5,7 @@ import Link from 'next/link';
 const Signup: React.FC = () => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
@@ -12,10 +13,10 @@ const Signup: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://call.shelteric.com:3001/api/auth/signup', {
+      const res = await fetch('http://localhost:3001/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, username, password }),
+        body: JSON.stringify({ name, username, phoneNumber, password }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -34,7 +35,6 @@ const Signup: React.FC = () => {
 
   // Handler for Google sign-in
   const handleGoogleSignIn = () => {
-    // Simply redirect to the Google authentication endpoint.
     window.location.href = 'http://localhost:3001/api/auth/google';
   };
 
@@ -66,6 +66,18 @@ const Signup: React.FC = () => {
               className="w-full px-3 py-2 border rounded-lg text-gray-950"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Phone Number</label>
+            <input
+              type="tel"
+              name="+91XXXXXXXXXX"
+              placeholder="+91XXXXXXXXXX"
+              className="w-full px-3 py-2 border rounded-lg text-gray-950"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
           </div>

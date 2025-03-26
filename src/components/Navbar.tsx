@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -8,7 +8,6 @@ import {
   MdLocationOn,
   MdSearch,
   MdNotifications,
-  MdLogout,
   MdMic,
   MdQrCodeScanner,
 } from 'react-icons/md';
@@ -28,11 +27,9 @@ interface User {
 }
 
 const Navbar: React.FC = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const router = useRouter();
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -43,7 +40,7 @@ const Navbar: React.FC = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch('http://call.shelteric.com:3001/api/auth/me', {
+        const res = await fetch('http://localhost:3001/api/auth/me', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -66,10 +63,7 @@ const Navbar: React.FC = () => {
     fetchUser();
   }, [router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    router.push('/');
-  };
+
 
   const handleSearchChange = debounce((value: string) => {
     console.log('Searching for:', value);
@@ -123,9 +117,9 @@ const Navbar: React.FC = () => {
           </button>
           <div className="relative">
             <button
-              onClick={() => setIsDropdownOpen((prev) => !prev)}
               className="text-gray-600 hover:text-blue-600 transition duration-200 ease-in-out flex items-center"
             >
+              <Link href="/settings">
               {user ? (
                 <span className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full text-lg font-semibold">
                   {user.name.charAt(0).toUpperCase()}
@@ -134,25 +128,8 @@ const Navbar: React.FC = () => {
                 <span className="h-8 w-8 flex items-center justify-center bg-gray-300 text-gray-800 rounded-full text-lg">
                   ?
                 </span>
-              )}
+              )}</Link>
             </button>
-            {isDropdownOpen && user && (
-              <div
-                ref={dropdownRef}
-                className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10"
-              >
-                <Link href="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-                  Profile
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center px-4 py-2 w-full text-left text-gray-800 hover:bg-gray-100"
-                >
-                  <MdLogout className="mr-2" />
-                  Logout
-                </button>
-              </div>
-            )}
           </div>
         </nav>
       </div>
