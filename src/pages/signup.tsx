@@ -35,7 +35,7 @@ const Signup: React.FC = () => {
 
   // Handler for Google sign-in
   const handleGoogleSignIn = () => {
-    window.location.href = 'http://localhost:3001/api/auth/google';
+    window.location.href = 'https://calling.shelteric.com/api/auth/google';
   };
 
   return (

@@ -7,7 +7,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://calling.shelteric.com";
 
   // Handler for traditional login
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

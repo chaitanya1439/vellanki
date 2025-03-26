@@ -12,7 +12,7 @@ export default function ResetPassword() {
   const sendOtp = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3001/api/auth/send-otp", { phoneNumber });
+      const response = await axios.post("https://calling.shelteric.com/api/auth/send-otp", { phoneNumber });
       setMessage(response.data.message);
       setStep(2);
     } catch (error) {
@@ -25,7 +25,7 @@ export default function ResetPassword() {
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3001/api/auth/verify-otp", {
+      const response = await axios.post("https://calling.shelteric.com/api/auth/verify-otp", {
         phoneNumber,
         otp,
         newPassword,

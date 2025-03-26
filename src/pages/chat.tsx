@@ -14,7 +14,7 @@ const ChatPage = () => {
     setResponse("");
 
     try {
-      const res = await fetch(`http://localhost:3001/api/chat`, {
+      const res = await fetch(`https://calling.shelteric.com/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: [{ role: "user", content: prompt }] }),

@@ -38,7 +38,7 @@ const Home: React.FC = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/auth/me', {
+        const res = await fetch('https://calling.shelteric.com/api/auth/me', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
