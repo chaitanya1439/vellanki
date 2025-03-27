@@ -13,7 +13,7 @@ const Signup: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3001/api/auth/signup', {
+      const res = await fetch('https://calling.shelteric.com/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, username, phoneNumber, password }),
@@ -35,7 +35,7 @@ const Signup: React.FC = () => {
 
   // Handler for Google sign-in
   const handleGoogleSignIn = () => {
-    window.location.href = 'https://calling.shelteric.com/api/auth/google';
+    window.location.href = 'https://collab.shelteric.com/api/auth/google';
   };
 
   return (
