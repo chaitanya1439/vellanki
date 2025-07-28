@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import _ from 'lodash';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
@@ -205,42 +204,9 @@ export default function Travel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, isLoaded, currentLocation]);
 
-  const fetchPlaces = async (input: string) => {
-    if (!input.trim()) {
-      setPlaces([]);
-      return;
-    }
 
-    try {
-      const response = await axios.get('/api/places', {
-        params: {
-          input,
-          type: 'autocomplete'
-        }
-      });
-      setPlaces(response.data.predictions);
-    } catch (error) {
-      console.error(error);
-      toast.error("Error fetching places");
-    }
-  };
 
-  const debouncedFetchPlaces = useCallback(
-    _.debounce((input: string | null) => {
-      if (input) {
-        fetchPlaces(input);
-      }
-    }, 300),
-    []
-  );
 
-  useEffect(() => {
-    if (query.length > 2) {
-      debouncedFetchPlaces(query);
-    } else {
-      setPlaces([]);
-    }
-  }, [query, debouncedFetchPlaces]);
 
   const handlePlaceSelect = async (placeId: string) => {
     try {
