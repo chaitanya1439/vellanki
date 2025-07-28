@@ -7,7 +7,7 @@ class MyDocument extends Document {
         <Head>
           {/* Add the Google Maps script here */}
           <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaYvW9Ki74N1YMgRmlEz6Mc1UoTyCuH8o&libraries=places"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGcacS_lMskC1we2aAiv6-9hX962_IGNs&libraries=places"
             async
             defer
           />

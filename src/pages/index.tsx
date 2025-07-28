@@ -1,35 +1,20 @@
-import { useRouter } from "next/router";
-import Banner from "../components/Banner";
-import BottomNavbar from "../components/BottonNavbar1";
-import CartPage from "../components/Cart";
-import Navbar from "../components/navbar1";
-import { useEffect } from "react";
+import { Header } from "@/components/Header";
+import { ServicesGrid } from "@/components/ServicesGrid";
+import { FeatureSection } from "@/components/FeatureSection";
 
-export function Index() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      router.push('/home');
-    }
-  }, [router]);
-  
+const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
-      <div className="bg-gray-100 w-full fixed top-0 left-0 z-50">
-        <Navbar />
-      </div>
-      <div className="flex-grow pt-12">
-        <Banner />
-      </div>
-      <CartPage />
-      <p>
-        
-      </p>
-      <BottomNavbar />
+    <div className="min-h-screen bg-background">
+      {/* Header with location and search */}
+      <Header />
+      
+      {/* Services Grid */}
+      <ServicesGrid />
+      
+      {/* Feature Sections */}
+      <FeatureSection />
     </div>
   );
-}
+};
 
 export default Index;

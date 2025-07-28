@@ -14,7 +14,7 @@ const ChatPage = () => {
     setResponse("");
 
     try {
-      const res = await fetch(`https://calling.shelteric.com/api/chat`, {
+      const res = await fetch(`https://chaitanya-psi.vercel.app/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: [{ role: "user", content: prompt }] }),

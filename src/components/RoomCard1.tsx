@@ -7,24 +7,24 @@ type Room = {
   price: number;
   rating: number;
   amenities: string[];
-  image: string; // Room image URL
+  image: string;
+  liked: boolean;
+  reviews: { id: string | number }[];
+  place: string;
 };
 
-// RoomCardsProps to hold an array of rooms
 interface RoomCardsProps {
   rooms: Room[];
 }
 
-// RoomCards component to display the room grid
 const RoomCards: React.FC<RoomCardsProps> = ({ rooms }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {rooms.map((room) => (
         <RoomCard
           key={room.id}
-          title={`Room ${room.id}`}
-          price={room.price}
-          imageSrc={room.image}
+          room={room}
+          onToggleLike={() => {}}
         />
       ))}
     </div>

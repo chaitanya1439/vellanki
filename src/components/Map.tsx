@@ -1,80 +1,65 @@
 import React, { useEffect } from 'react';
+import { useJsApiLoader } from '@react-google-maps/api';
 
-declare global {
-  interface Window {
-    google: typeof google; // Declare google on the window object
-  }
-}
+export const GOOGLE_MAPS_API_OPTIONS = {
+  googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+  libraries: ['places', 'geometry'] as (
+    | 'places'
+    | 'drawing'
+    | 'geometry'
+    | 'visualization'
+  )[],
+  region: 'IN',
+  language: 'en',
+};
 
-// Define the Location type
 interface Location {
   lat: number;
   lng: number;
 }
 
 interface MapProps {
-  elementId: string; // Prop for the map element ID
-  center: Location; // Center coordinates
+  elementId: string;
+  center: Location;
 }
 
 const Map: React.FC<MapProps> = ({ elementId, center }) => {
+  const { isLoaded } = useJsApiLoader(GOOGLE_MAPS_API_OPTIONS);
+
   useEffect(() => {
-    const initMap = async () => {
-      // Check if Google Maps library is already loaded
-      if (!window.google) {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
-        script.async = true;
-        script.onload = createMap; // Create the map after loading the script
-        document.head.appendChild(script);
-      } else {
-        createMap(); // Create the map if the library is already loaded
+    if (!isLoaded || !window.google) return; // Only run if Google Maps is loaded
+
+    const map = new window.google.maps.Map(document.getElementById(elementId)!, {
+      zoom: 10,
+      center: center,
+    });
+
+    let infoWindow = new window.google.maps.InfoWindow({
+      content: "Click the map to get Lat/Lng!",
+      position: center,
+    });
+
+    infoWindow.open(map);
+
+    map.addListener("click", (mapsMouseEvent: google.maps.MapMouseEvent) => {
+      infoWindow.close();
+      const latLng = mapsMouseEvent.latLng;
+      if (latLng) {
+        infoWindow = new window.google.maps.InfoWindow({
+          position: latLng,
+        });
+        infoWindow.setContent(JSON.stringify(latLng.toJSON(), null, 2));
+        infoWindow.open(map);
       }
-    };
-
-    const createMap = () => {
-      const map = new window.google.maps.Map(document.getElementById(elementId)!, {
-        zoom: 10,
-        center: center,
-      });
-
-      // Create and manage InfoWindows
-      let infoWindow = new window.google.maps.InfoWindow({
-        content: "Click the map to get Lat/Lng!",
-        position: center,
-      });
-
-      infoWindow.open(map);
-
-      // Configure the click listener
-      map.addListener("click", (mapsMouseEvent: google.maps.MapMouseEvent) => {
-        // Close the current InfoWindow
-        infoWindow.close();
-
-        // Get the latLng from the click event
-        const latLng = mapsMouseEvent.latLng;
-        if (latLng) {
-          // Create a new InfoWindow
-          infoWindow = new window.google.maps.InfoWindow({
-            position: latLng,
-          });
-          infoWindow.setContent(JSON.stringify(latLng.toJSON(), null, 2));
-          infoWindow.open(map);
-        } else {
-          console.error("latLng is null");
-        }
-      });
-    };
-
-    initMap();
+    });
 
     return () => {
       const mapElement = document.getElementById(elementId);
       if (mapElement) {
-        mapElement.innerHTML = ''; // Clean up the map element
+        mapElement.innerHTML = '';
       }
     };
-  }, [elementId, center]);
+  }, [isLoaded, elementId, center]);
 
   return <div id={elementId} className="w-full h-96" />;
 };

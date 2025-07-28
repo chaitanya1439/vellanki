@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const Settings = () => {
-  const [user, setUser] = useState<{ name: string, phoneNumber: string} | null>(null);
+  const [user, setUser] = useState<{ name: string, phone: string} | null>(null);
     const router = useRouter();
   
     useEffect(() => {
@@ -15,7 +15,7 @@ const Settings = () => {
   
       const fetchUser = async () => {
         try {
-          const res = await fetch('https://calling.shelteric.com/api/auth/me', {
+          const res = await fetch('http://localhost:3001/api/auth/me', {
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
@@ -58,7 +58,7 @@ const Settings = () => {
           </div>
           <div>
             <span className="text-lg font-semibold">{user?.name || 'User'}</span>
-            <p className="text-gray-500">{user?.phoneNumber || 'User'}</p>
+            <p className="text-gray-500">{user?.phone || 'User'}</p>
           </div>
         </div>
       </div>

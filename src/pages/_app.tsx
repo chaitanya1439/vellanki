@@ -7,6 +7,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Shelteric</title>
+       
       </Head>
       <Component {...pageProps} />
     </>
