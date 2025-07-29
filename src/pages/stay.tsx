@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import SearchBar from '@/components/SearchBar';
 import FilterPanel from '@/components/FilterPanel';
 import RoomCard from '@/components/RoomCard';
-import MapView from '@/components/MapView';
+
 
 // Only import used icons/components
 import { Bed, Hotel, House } from 'lucide-react';
@@ -113,7 +113,6 @@ export default function StayPage() {
           </div>
           {/* Right: MapView */}
           <div className="w-full lg:w-[420px] xl:w-[480px] h-[400px] lg:h-[calc(100vh-180px)] sticky top-28">
-            <MapView rooms={filtered} selectedId={selected} onSelect={setSelected} />
           </div>
         </div>
       </div>

@@ -35,7 +35,7 @@ export default function SearchBar({
 
   // Use the same loader options everywhere
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'AIzaSyAGcacS_lMskC1we2aAiv6-9hX962_IGNs',
     libraries: LIBRARIES,
     region: 'IN',
     language: 'en',
